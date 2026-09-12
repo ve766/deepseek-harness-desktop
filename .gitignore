@@ -42,6 +42,8 @@ worktrees/
 # Electron build
 release/
 out/
+# Electron production runtime closure (pnpm deploy target)
+electron/server/
 
 # Electron installer
 *.exe

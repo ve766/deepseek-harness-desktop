@@ -1,0 +1,52 @@
+/* Switcher row inside the sidebar footer: one compact button per view,
+   matching the footer's light control density. Rail mode (wide = false)
+   centers under the 56px column, so the buttons shrink and ellipsize. */
+
+.root {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 2px;
+  margin: 0 8px 4px;
+}
+
+.item {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  min-height: 24px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 12px;
+  line-height: 18px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.item:hover,
+.item:focus-visible {
+  background: var(--dsw-alias-fill-l2);
+  color: var(--dsw-alias-label-secondary);
+}
+
+.itemActive {
+  background: var(--dsw-alias-fill-l2);
+  color: var(--dsw-alias-label-primary);
+}
+
+/* Rail: the column is 56px and the footer centers its actions, so the row
+   gives up its stretch and each button keeps at most a label's worth of it. */
+.rail {
+  justify-content: center;
+  margin: 0 0 4px;
+}
+
+.rail .item {
+  flex: none;
+  max-width: 40px;
+  padding: 0 4px;
+}

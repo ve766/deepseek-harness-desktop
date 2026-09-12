@@ -14,13 +14,17 @@ import {
 } from './columns.ts'
 
 /**
- * Layout store state: panel width preferences in px (0 = closed), plus the
+ * Layout store state: panel width preferences in px (0 = closed), the
  * narrow-viewport pair — `narrow` mirrors AppFrame's breakpoint reading
  * (viewport < SIDEBAR_AUTO_COLLAPSE) so toggleSidebar can pick semantics, and
  * `narrowExpanded` is the manual override that re-expands the auto-collapsed
- * sidebar over the squeezed center without rewriting the width preference.
+ * sidebar over the squeezed center without rewriting the width preference —
+ * and the center column's active view id (`app.view` entry id; the 'chat'
+ * default needs no entry: it is the frame's fallback to the conversation
+ * slot). Deliberately a plain string, not an enum: views are an open
+ * registry, and unknown ids simply fall back.
  */
-type LayoutState = { sidebar: number; details: number; narrow: boolean; narrowExpanded: boolean }
+type LayoutState = { sidebar: number; details: number; narrow: boolean; narrowExpanded: boolean; view: string }
 
 /**
  * Annotation twin of the actions literal below (the export needs a declared
@@ -33,6 +37,7 @@ type LayoutActions = {
   setNarrow: (draft: LayoutState, narrow: boolean) => void
   openDetails: (draft: LayoutState) => void
   closeDetails: (draft: LayoutState) => void
+  setView: (draft: LayoutState, view: string) => void
 }
 
 /**
@@ -47,7 +52,9 @@ type LayoutActions = {
  */
 export function createLayoutStore(): EngineStoreHandle<LayoutState, LayoutActions>  {
   const handle = defineStore({
-    init: (): LayoutState => ({ sidebar: SIDEBAR_DEFAULT, details: 0, narrow: false, narrowExpanded: false }),
+    // The view field is transient (never persisted): a fresh page load always
+    // re-enters the 'chat' default, exactly the pre-framework behavior.
+    init: (): LayoutState => ({ sidebar: SIDEBAR_DEFAULT, details: 0, narrow: false, narrowExpanded: false, view: 'chat' }),
     actions: {
       setSidebar: (d, px: number) => { d.sidebar = clampWidth(px, SIDEBAR_MIN, SIDEBAR_MAX) },
       setDetails: (d, px: number) => { d.details = clampWidth(px, DETAILS_MIN, DETAILS_MAX) },
@@ -66,6 +73,10 @@ export function createLayoutStore(): EngineStoreHandle<LayoutState, LayoutAction
       },
       openDetails: (d) => { if (d.details === 0) d.details = DETAILS_DEFAULT },
       closeDetails: (d) => { d.details = 0 },
+      // Open registry: any string id. An id with no registered 'app.view'
+      // entry (including the 'chat' default) renders the conversation
+      // fallback, so an unknown id degrades to chat instead of a blank center.
+      setView: (d, view: string) => { d.view = view },
     },
   })
   return handle

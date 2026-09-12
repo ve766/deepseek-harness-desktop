@@ -1,0 +1,15 @@
+.root {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.field {
+  flex: 1;
+  min-width: 0;
+}
+
+.submit {
+  flex: none;
+}

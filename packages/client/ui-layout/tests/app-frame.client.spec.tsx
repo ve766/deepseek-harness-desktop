@@ -13,6 +13,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { act, cleanup, render } from '@testing-library/react'
 import { useSyncExternalStore } from 'react'
+import type { ReactNode } from 'react'
 import { AppFrame } from '@deepseek-ai/dsh-client-ui-layout/src/client/AppFrame.tsx'
 import type { AppFrameProps } from '@deepseek-ai/dsh-client-ui-layout/src/client/AppFrame.tsx'
 import { SIDEBAR_COLLAPSED } from '@deepseek-ai/dsh-client-ui-layout/src/client/columns.ts'
@@ -56,8 +57,17 @@ function mountFrame() {
   window.innerWidth = frameWidth // first-render viewport source before the observer fires
   const instance = createLayoutStore().create()
   const slotCalls: { key: string; props: unknown }[] = []
-  const renderSlot = ((key: string, owner: object) => {
+  const renderSlot = ((key: string, owner: object, opts?: { only?: string; fallback?: ReactNode }) => {
     slotCalls.push({ key, props: owner })
+    // The view ring mirrors the renderer's list-dispatch contract: only the
+    // entry matching `only` renders, and an empty filter falls back. Tests
+    // simulate one registered entry ('knowledge') as a future view module
+    // would contribute; every other id — including the 'chat' default, which
+    // never registers — takes the fallback node (the conversation slot).
+    if (key === 'app.view') {
+      if (opts?.only === 'knowledge') return <div data-testid="knowledge-view" />
+      return opts?.fallback ?? null
+    }
     if (key === 'sidebar') return <div data-testid="sidebar-content" />
     if (key === 'conversation') return <div data-testid="center-content" />
     if (key === 'details') return <div data-testid="details-content" />
@@ -152,6 +162,30 @@ describe('AppFrame', () => {
     expect(keys).not.toContain('conversation.empty')
     expect(slotCalls.find(c => c.key === 'conversation')!.props).toEqual({})
     expect(slotCalls.find(c => c.key === 'details')!.props).toEqual({})
+  })
+
+  it('the center defaults to the conversation fallback and follows the active view id', () => {
+    const { instance, getByTestId, queryByTestId } = mountFrame()
+    // Default ('chat', which never registers): the ring falls back to the
+    // conversation slot — the pre-framework center, unchanged.
+    expect(getByTestId('center-content')).toBeTruthy()
+    expect(queryByTestId('knowledge-view')).toBeNull()
+
+    // A registered view id replaces the center content.
+    act(() => { instance.actions.setView('knowledge') })
+    expect(getByTestId('knowledge-view')).toBeTruthy()
+    expect(queryByTestId('center-content')).toBeNull()
+
+    // An unregistered id (no entry ever registered it) degrades to the
+    // fallback rather than a blank center.
+    act(() => { instance.actions.setView('video') })
+    expect(getByTestId('center-content')).toBeTruthy()
+    expect(queryByTestId('knowledge-view')).toBeNull()
+
+    // Back to chat: the conversation returns.
+    act(() => { instance.actions.setView('chat') })
+    expect(getByTestId('center-content')).toBeTruthy()
+    expect(queryByTestId('knowledge-view')).toBeNull()
   })
 
   it('keeps the conversation slot mounted while no session is current', () => {

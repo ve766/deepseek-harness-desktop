@@ -29,5 +29,7 @@
     {
       "path": "../../core/system-prompt"
     }
-  ]
+  ,
+  {"path": "../connection"},
+  {"path": "../ui-primitives"}]
 }

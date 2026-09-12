@@ -47,5 +47,6 @@
     {
       "path": "../ui-settings"
     }
-  ]
+  ,
+  {"path": "../../api/remotes"}]
 }

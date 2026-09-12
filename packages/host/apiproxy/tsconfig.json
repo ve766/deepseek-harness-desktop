@@ -101,5 +101,7 @@
     {
       "path": "../../util/native-command"
     }
-  ]
+  ,
+  {"path": "../../api/remotes/tsconfig.host.json"},
+  {"path": "../../core/scope"}]
 }

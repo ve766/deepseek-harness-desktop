@@ -1,0 +1,233 @@
+/* P2 — AI association explainer.
+   Animation timeline is driven by the `.assoc--<stage>` class set in JS:
+     source(pulse) → edge(reveal) → target(ripple) → reason bubble.
+   Reduced-motion is also enforced here via the media query as a hard fallback. */
+
+.assoc {
+  --assoc-accent: var(--accent, #5e5ce6);
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 22px 24px 26px;
+  border-radius: 18px;
+  background: var(--bg-layer-2);
+  border: 1px solid var(--border-l2);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.assoc__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--label-tertiary);
+}
+.assoc__badge {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--label-secondary);
+  font-weight: 600;
+}
+.assoc__arrow { color: var(--assoc-accent); font-weight: 700; }
+.assoc__stage {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  color: var(--assoc-accent);
+  font-weight: 600;
+}
+
+/* ---- stage area: source — edge — target ---- */
+.assoc__stage-area {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin: 22px 0 18px;
+}
+.assoc__node {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-l1);
+  border-left: 3px solid var(--assoc-accent);
+  overflow: visible;
+}
+.assoc__node-body { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.assoc__node-kind {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--assoc-accent);
+  font-weight: 700;
+}
+.assoc__node-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--label-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* pulse ring on the source */
+.assoc__pulse,
+.assoc__ripple {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 50%;
+  background: var(--assoc-accent);
+  opacity: 0;
+  pointer-events: none;
+}
+.assoc--pulse .assoc__pulse,
+.assoc--reveal .assoc__pulse,
+.assoc--ripple .assoc__pulse,
+.assoc--reason .assoc__pulse {
+  opacity: 0.9;
+}
+.assoc--pulse .assoc__pulse {
+  animation: assoc-pulse var(--dur-morph, 520ms) var(--ease-out, ease-out);
+}
+/* keep a soft static dot once past the pulse stage */
+.assoc--reveal .assoc__pulse,
+.assoc--ripple .assoc__pulse,
+.assoc--reason .assoc__pulse {
+  transform: scale(0.7);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--assoc-accent) 25%, transparent);
+}
+
+/* target ripple */
+.assoc--ripple .assoc__ripple,
+.assoc--reason .assoc__ripple {
+  animation: assoc-ripple var(--dur-morph, 520ms) var(--ease-out, ease-out);
+}
+.assoc--reveal .assoc__ripple { opacity: 0; }
+.assoc--reason .assoc__ripple { opacity: 0.85; }
+
+@keyframes assoc-pulse {
+  0% { transform: scale(0.6); opacity: 0.9; box-shadow: 0 0 0 0 color-mix(in srgb, var(--assoc-accent) 60%, transparent); }
+  100% { transform: scale(1); opacity: 0.5; box-shadow: 0 0 0 18px color-mix(in srgb, var(--assoc-accent) 0%, transparent); }
+}
+@keyframes assoc-ripple {
+  0% { transform: scale(0.5); opacity: 0.9; box-shadow: 0 0 0 0 color-mix(in srgb, var(--assoc-accent) 60%, transparent); }
+  100% { transform: scale(1.2); opacity: 0; box-shadow: 0 0 0 22px color-mix(in srgb, var(--assoc-accent) 0%, transparent); }
+}
+
+/* ---- edge ---- */
+.assoc__edge { width: 120px; height: 80px; overflow: visible; }
+.assoc__edge-line {
+  stroke: var(--assoc-accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  opacity: 0.25;
+}
+.assoc--reveal .assoc__edge-line,
+.assoc--ripple .assoc__edge-line,
+.assoc--reason .assoc__edge-line {
+  stroke-dashoffset: 0;
+  opacity: 1;
+  transition: stroke-dashoffset var(--dur-slow, 400ms) var(--ease-out, ease-out),
+    opacity var(--dur-fast, 160ms) ease-out;
+}
+
+/* ---- reason bubble ---- */
+.assoc__reason {
+  margin-top: 4px;
+  padding: 16px 18px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--assoc-accent) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--assoc-accent) 35%, transparent);
+  opacity: 0;
+  transform: translateY(10px);
+}
+.assoc--reason .assoc__reason {
+  opacity: 1;
+  transform: none;
+  transition: opacity var(--dur-normal, 240ms) ease-out,
+    transform var(--dur-normal, 240ms) var(--ease-out, ease-out);
+}
+.assoc__reason-why {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--assoc-accent);
+  margin-bottom: 6px;
+}
+.assoc__reason-text {
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--label-primary);
+  font-weight: 600;
+}
+.assoc__reason-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+.assoc__chip {
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--assoc-accent);
+  background: color-mix(in srgb, var(--assoc-accent) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--assoc-accent) 40%, transparent);
+}
+.assoc__conf { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--label-secondary); }
+.assoc__conf-bar {
+  width: 120px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+.assoc__conf-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--assoc-accent);
+}
+.assoc__conf-val { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--label-primary); }
+
+/* ---- reduced motion: show everything, kill motion ---- */
+.assoc--reduced .assoc__pulse,
+.assoc--reduced .assoc__ripple {
+  opacity: 0.85;
+  animation: none !important;
+  transform: scale(0.7);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--assoc-accent) 25%, transparent);
+}
+.assoc--reduced .assoc__edge-line {
+  stroke-dashoffset: 0;
+  opacity: 1;
+  transition: none !important;
+}
+.assoc--reduced .assoc__reason {
+  opacity: 1;
+  transform: none;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .assoc__pulse,
+  .assoc__ripple {
+    animation: none !important;
+    opacity: 0.85;
+    transform: scale(0.7);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--assoc-accent) 25%, transparent);
+  }
+  .assoc__edge-line { stroke-dashoffset: 0 !important; opacity: 1 !important; transition: none !important; }
+  .assoc__reason { opacity: 1 !important; transform: none !important; transition: none !important; }
+}

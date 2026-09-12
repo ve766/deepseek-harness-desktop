@@ -38,5 +38,7 @@
     {
       "path": "../ui-slots"
     }
-  ]
+  ,
+  {"path": "../../api/remotes"},
+  {"path": "../connection"}]
 }

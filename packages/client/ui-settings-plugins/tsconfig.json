@@ -38,5 +38,7 @@
     {
       "path": "../../runtime-diagnostics/invariants"
     }
-  ]
+  ,
+  {"path": "../../api/remotes"},
+  {"path": "../connection"}]
 }

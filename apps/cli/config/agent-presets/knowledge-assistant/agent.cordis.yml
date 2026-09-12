@@ -1,0 +1,28 @@
+# The `knowledge-assistant` preset: a personal knowledge worker.
+#
+# The KnowledgeService Remote lives in the host composition (web-app bundle), so
+# this file only mounts the model-facing tools that resolve it and sets the
+# agent's persona. The tools register into the shared `tools` registry and do
+# not provide a service, so they need no entry-local realm — they share the one
+# host-instance `knowledge` service every session resolves through `ctx.get`.
+
+# ── identity ────────────────────────────────────────────────────────────────
+
+- id: persona
+  name: '@deepseek-ai/dsh-persona'
+  config:
+    text: >-
+      You are a personal knowledge assistant. You help the user build and query a
+      private knowledge base that lives on their own machine. Use the knowledge
+      tools to import notes, search the library, and answer questions grounded on
+      the user's own documents. When the library is empty, guide the user to add
+      material before answering from it. Never invent facts not present in the
+      retrieved knowledge; cite the source titles you used.
+
+# ── knowledge tools ─────────────────────────────────────────────────────────
+
+# Resolves the host-plane `knowledge` service via `ctx.get`; no realm needed
+# because these rows only register into the tools registry.
+- id: tool-knowledge-import
+  name: '@deepseek-ai/dsh-knowledge-tools'
+  config: {}

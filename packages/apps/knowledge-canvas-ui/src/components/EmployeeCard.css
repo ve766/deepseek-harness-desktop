@@ -1,0 +1,217 @@
+/* ===========================================================================
+   AI Employee Identity Unit — EmployeeIcon / EmployeeIdentity / EmployeeCard
+   Consumes ONLY E0 `--aios-*` tokens. No new tokens, no backdrop-filter glass
+   (Liquid Glass is a Phase-2 visual language), no loop animations.
+   =========================================================================== */
+
+/* ---------- EmployeeIcon : App-Icon layer ---------- */
+.employee-icon {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+}
+.employee-icon__tile {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--aios-radius-icon); /* 22% squircle — Apple App Icon feel */
+  background: var(--emp-color);
+  border: 0.5px solid var(--aios-glass-border);
+  box-shadow: var(--aios-depth-1);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  /* micro-interaction only; reduced-motion folds --aios-motion-dur-fast to ~0 */
+  transition: transform var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+/* glossy top highlight — theme-agnostic, reads in light & dark */
+.employee-icon__tile::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0) 52%);
+  pointer-events: none;
+}
+.employee-icon:hover .employee-icon__tile {
+  transform: scale(1.04);
+}
+.employee-icon__img {
+  width: 84%;
+  height: 84%;
+  object-fit: contain;
+  border-radius: 4px;
+}
+.employee-icon__mono {
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  user-select: none;
+}
+.employee-icon__status {
+  position: absolute;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50%;
+  background: var(--bg-base);
+  box-shadow: var(--aios-depth-1);
+  display: grid;
+  place-items: center;
+}
+
+/* ---------- EmployeeCard : container ---------- */
+.employee-card {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  max-width: 280px;
+  background: var(--bg-layer-2);
+  border: 1px solid var(--aios-glass-border);
+  border-radius: var(--aios-radius-lg);
+  box-shadow: var(--aios-depth-1);
+  z-index: var(--aios-layer-panel); /* future spatial layering, no z-index sprawl */
+}
+.employee-card--hero {
+  max-width: 320px;
+  padding: 20px;
+}
+.employee-card--compact {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+}
+/* Placeholder variant — icon art not yet confirmed (mascot master pending).
+   Reads as "identity unit, asset to be dropped in", not a broken image. */
+.employee-card--placeholder {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--emp-color) 45%, transparent);
+  background: color-mix(in srgb, var(--emp-color) 6%, var(--bg-layer-2));
+}
+
+.employee-card__top {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+}
+.employee-card--hero .employee-card__top {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.employee-card__id {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.employee-card--hero .employee-card__id {
+  align-items: center;
+}
+.employee-card__name {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--label-primary);
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.employee-card__role {
+  font-size: 12.5px;
+  color: var(--label-secondary);
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.employee-card__status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 2px;
+}
+.employee-card__status-label {
+  font-size: 12px;
+  color: var(--label-tertiary);
+}
+.employee-card__phrase {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--label-secondary);
+  margin-top: 4px;
+}
+
+/* ---------- Level / growth (display-only, mock) ---------- */
+.employee-card__level {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.employee-card__level-track {
+  flex: 1;
+  height: 6px;
+  border-radius: var(--aios-radius-full);
+  background: color-mix(in srgb, var(--emp-color) 14%, transparent);
+  overflow: hidden;
+}
+.employee-card__level-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--aios-radius-full);
+  background: var(--emp-color);
+  transition: width var(--aios-motion-dur-base) var(--aios-motion-ease);
+}
+.employee-card__level-text {
+  font-size: 11px;
+  color: var(--label-tertiary);
+  white-space: nowrap;
+}
+
+/* ---------- Capability hints (display-only, mock) ---------- */
+.employee-card__caps {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.employee-card--hero .employee-card__caps {
+  justify-content: center;
+}
+.employee-card__cap {
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: var(--aios-radius-full);
+  color: var(--label-primary);
+  background: color-mix(in srgb, var(--emp-color) 14%, transparent);
+  border: 1px solid var(--aios-glass-border);
+  white-space: nowrap;
+}
+
+/* ---------- P3 showcase layout helpers ---------- */
+.ec-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.ec-cell {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px;
+  background: var(--bg-layer-1);
+  border-radius: var(--aios-radius-md);
+}
+.ec-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 8px;
+}
+.ec-hero-row {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}

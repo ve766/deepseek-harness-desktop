@@ -35,5 +35,6 @@
     {
       "path": "../../runtime-diagnostics/invariants"
     }
-  ]
+  ,
+  {"path": "../../core/scope"}]
 }

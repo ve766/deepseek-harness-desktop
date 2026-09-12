@@ -1,0 +1,19 @@
+.root {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) minmax(0, 420px);
+  height: 100%;
+  width: 100%;
+  background: var(--dsw-alias-bg-base);
+  color: var(--dsw-alias-label-primary);
+}
+
+.workspace {
+  overflow-y: auto;
+  background: var(--dsw-alias-bg-layer-1);
+}
+
+.detail {
+  overflow-y: auto;
+  background: var(--dsw-alias-bg-layer-1);
+  border-left: 1px solid var(--dsw-alias-border-l1);
+}

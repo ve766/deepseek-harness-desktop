@@ -1,0 +1,119 @@
+.avatar {
+  position: relative;
+  flex-shrink: 0;
+  /* --ec-status is injected by the component from status.ts */
+}
+
+/* Role-representative tile background (Mascot Visual System v1.0 family colors,
+   kept at low alpha so the mascot figure stays the focal point). */
+.tile {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+}
+.tile[data-mascot='assistant'] {
+  background: linear-gradient(160deg, rgba(245, 166, 35, 0.20), rgba(255, 207, 107, 0.10));
+}
+.tile[data-mascot='nox'] {
+  background: linear-gradient(160deg, rgba(168, 200, 236, 0.22), rgba(255, 255, 255, 0.08));
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Hover lift — the avatar "leans in" when the card is hovered/focused. */
+.avatar:hover .tile {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+/* Status animation container: a ring around the tile. Color + motion follow the
+   5-state lifecycle (Employee Card & Desktop Experience Design v1.0 §3.2). */
+.ring {
+  position: absolute;
+  inset: -3px;
+  border-radius: 25px;
+  pointer-events: none;
+  border: 2px solid var(--ec-status);
+}
+.badge {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--dsw-alias-bg-layer-1);
+  border: 2px solid var(--dsw-alias-bg-layer-1);
+}
+.badge::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 50%;
+  background: var(--ec-status);
+  animation: ec-pulse 1.4s ease-in-out infinite;
+}
+
+/* Idle — slow breathe. */
+.avatar[data-status='idle'] .ring {
+  opacity: 0.35;
+  animation: ec-breathe 3s ease-in-out infinite;
+}
+.avatar[data-status='idle'] .badge::after {
+  animation: ec-breathe 3s ease-in-out infinite;
+}
+
+/* Working — rotating progress ring (border-top only). */
+.avatar[data-status='working'] .ring {
+  border-color: transparent;
+  border-top-color: var(--ec-status);
+  animation: ec-spin 1s linear infinite;
+}
+
+/* Thinking — soft pulse. */
+.avatar[data-status='thinking'] .ring {
+  animation: ec-pulse 1.2s ease-in-out infinite;
+}
+
+/* Success — calm glow, no motion. */
+.avatar[data-status='success'] .ring {
+  box-shadow: 0 0 12px var(--ec-status);
+}
+
+/* Error — gentle shake to ask for help. */
+.avatar[data-status='error'] .ring {
+  animation: ec-shake 1.2s ease-in-out infinite;
+}
+.avatar[data-status='error'] .badge::after {
+  animation: ec-shake 1.2s ease-in-out infinite;
+}
+
+@keyframes ec-spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes ec-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.45; transform: scale(0.7); }
+}
+@keyframes ec-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.9; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+@keyframes ec-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  75% { transform: translateX(3px); }
+}

@@ -1,0 +1,50 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  color: var(--dsw-alias-label-primary);
+}
+
+.summary {
+  font-size: 14px;
+  margin: 0;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.label {
+  color: var(--dsw-alias-label-tertiary);
+  min-width: 64px;
+}
+
+.value {
+  color: var(--dsw-alias-label-secondary);
+  margin: 0;
+}
+
+.tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}

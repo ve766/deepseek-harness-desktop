@@ -35,5 +35,9 @@
     {
       "path": "../ui-settings"
     }
-  ]
+  ,
+    {
+      "path": "../../../vendor/schemastery"
+    }
+]
 }

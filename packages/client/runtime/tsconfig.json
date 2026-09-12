@@ -59,7 +59,10 @@
     {
       "path": "../../api/remotes/tsconfig.client.json"
     }
-  ],
+  ,
+  {"path": "../../api/remotes"},
+  {"path": "../connection"},
+  {"path": "../../core/session"}],
   "exclude": [
     "**/*.legacy.*"
   ]

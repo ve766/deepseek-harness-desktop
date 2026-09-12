@@ -86,5 +86,6 @@
     {
       "path": "../../jobs/tool-jobs"
     }
-  ]
+  ,
+  {"path": "../../core/scope"}]
 }

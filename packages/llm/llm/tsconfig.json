@@ -26,5 +26,9 @@
     {
       "path": "../../util/timeout"
     }
-  ]
+  ,
+    {
+      "path": "../../../vendor/schemastery"
+    }
+]
 }

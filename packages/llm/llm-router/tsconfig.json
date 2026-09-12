@@ -1,0 +1,15 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true,
+    "paths": {
+      "@deepseek-ai/cordis": ["F:/deepseek-harness-dsh-v0.1.0-rc.7/deepseek-harness-dsh-v0.1.0-rc.7/vendor/cordis/lib/types/index.d.ts"],
+      "@deepseek-ai/schemastery": ["F:/deepseek-harness-dsh-v0.1.0-rc.7/deepseek-harness-dsh-v0.1.0-rc.7/vendor/schemastery/lib/types/index.d.ts"],
+      "@deepseek-ai/cosmokit": ["F:/deepseek-harness-dsh-v0.1.0-rc.7/deepseek-harness-dsh-v0.1.0-rc.7/vendor/cosmokit/lib/types/index.d.ts"],
+      "@deepseek-ai/dsh-llm": ["F:/deepseek-harness-dsh-v0.1.0-rc.7/deepseek-harness-dsh-v0.1.0-rc.7/packages/llm/llm/lib/types/index.d.ts"],
+      "@deepseek-ai/dsh-ai-provider-manager": ["F:/deepseek-harness-dsh-v0.1.0-rc.7/deepseek-harness-dsh-v0.1.0-rc.7/packages/llm/ai-provider-manager/src/index.ts"]
+    }
+  },
+  "include": ["src", "types-shims/**/*.d.ts"]
+}

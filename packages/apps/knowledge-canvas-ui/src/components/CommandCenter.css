@@ -1,0 +1,255 @@
+/* ============================================================
+ * AI Command Center (B) — single glass shell.
+ * E0 `--aios-*` tokens only. No new tokens, no extra glass layers.
+ * ============================================================ */
+
+.command-center {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  /* --- the ONE glass layer --- */
+  background: var(--aios-glass-bg);
+  -webkit-backdrop-filter: saturate(var(--aios-glass-saturate)) blur(var(--aios-blur-md));
+  backdrop-filter: saturate(var(--aios-glass-saturate)) blur(var(--aios-blur-md));
+  border: 1px solid var(--aios-glass-border);
+  box-shadow: var(--aios-depth-3);
+  border-radius: var(--aios-radius-lg);
+
+  color: var(--label-primary);
+  font-size: var(--text-body);
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+}
+
+.command-center--docked {
+  max-width: 100%;
+}
+
+/* ---------- header (title above, presence below) ---------- */
+.cc-header {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border-l1);
+}
+.cc-header__title {
+  font-size: var(--text-title);
+  font-weight: 600;
+  color: var(--label-primary);
+  line-height: 1.2;
+}
+.cc-header__presence {
+  width: 100%;
+}
+/* let the reused EmployeeCard fill the header without forcing a fixed width */
+.cc-header__presence .employee-card {
+  max-width: 100%;
+}
+
+/* ---------- sections (native <details>) ---------- */
+.cc-section {
+  border-top: 1px solid var(--border-l1);
+}
+.cc-section__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 2px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.cc-section__summary::-webkit-details-marker {
+  display: none;
+}
+.cc-section__title {
+  font-size: var(--text-foot);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--label-secondary);
+}
+.cc-section__chevron {
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--label-tertiary);
+  border-bottom: 1.5px solid var(--label-tertiary);
+  transform: rotate(45deg);
+  transition: transform var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+.cc-section[open] .cc-section__chevron {
+  transform: rotate(-135deg);
+}
+.cc-section__body {
+  padding: 4px 2px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---------- project + task read-outs ---------- */
+.cc-project__name,
+.cc-task__title {
+  font-size: var(--text-sub);
+  font-weight: 600;
+  color: var(--label-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cc-task__label {
+  font-size: var(--text-foot);
+  color: var(--label-tertiary);
+}
+.cc-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: var(--text-foot);
+}
+.cc-row__k {
+  color: var(--label-secondary);
+}
+.cc-row__v {
+  color: var(--label-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- progress bar ---------- */
+.cc-bar {
+  height: 6px;
+  width: 100%;
+  background: var(--bg-insert);
+  border-radius: var(--aios-radius-full);
+  overflow: hidden;
+}
+.cc-bar__fill {
+  display: block;
+  height: 100%;
+  background: var(--brand-primary);
+  border-radius: var(--aios-radius-full);
+  transition: width var(--aios-motion-dur-base) var(--aios-motion-ease);
+}
+
+/* ---------- actions (graded) ---------- */
+.cc-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.cc-action {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: var(--aios-radius-md);
+  border: 1px solid var(--border-l1);
+  background: var(--bg-layer-1);
+  color: var(--label-primary);
+  font: inherit;
+  font-size: var(--text-body);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    border-color var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+.cc-action:hover {
+  background: var(--bg-layer-2);
+  border-color: var(--brand-primary);
+}
+.cc-action--primary {
+  background: var(--brand-primary);
+  border-color: transparent;
+  color: #fff;
+}
+.cc-action--primary:hover {
+  background: var(--brand-ink);
+  border-color: transparent;
+}
+.cc-action__icon {
+  flex: 0 0 auto;
+  font-size: 16px;
+  line-height: 1;
+}
+.cc-action__label {
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cc-action__shortcut {
+  flex: 0 0 auto;
+  font-size: var(--text-caption);
+  color: var(--label-tertiary);
+  border: 1px solid var(--border-l1);
+  border-radius: 6px;
+  padding: 1px 6px;
+}
+.cc-action--primary .cc-action__shortcut {
+  color: rgba(255, 255, 255, 0.8);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+/* ---------- system entries ---------- */
+.cc-system {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cc-system__entry {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: var(--aios-radius-full);
+  border: 1px solid var(--border-l1);
+  background: var(--bg-layer-1);
+  color: var(--label-secondary);
+  font: inherit;
+  font-size: var(--text-foot);
+  cursor: pointer;
+  transition:
+    background var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    color var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+.cc-system__entry:hover {
+  background: var(--bg-layer-2);
+  color: var(--label-primary);
+}
+.cc-system__icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+/* ---------- empty state ---------- */
+.cc-empty {
+  font-size: var(--text-foot);
+  color: var(--label-tertiary);
+  padding: 4px 0;
+}
+
+/* narrow → docked automatically (defensive; the variant prop also drives it) */
+@media (max-width: 760px) {
+  .command-center--floating {
+    max-width: 100%;
+  }
+}
+
+/* reduced motion: kill transitions/animations (genuine compliance) */
+@media (prefers-reduced-motion: reduce) {
+  .command-center,
+  .command-center * {
+    transition: none !important;
+    animation: none !important;
+  }
+}

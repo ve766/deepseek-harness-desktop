@@ -42,5 +42,6 @@
     {
       "path": "../../runtime-diagnostics/invariants"
     }
-  ]
+  ,
+  {"path": "../../subprocess/subprocess"}]
 }

@@ -1,0 +1,25 @@
+.root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 28px 64px;
+  box-sizing: border-box;
+}
+
+.back {
+  appearance: none;
+  border: 1px solid var(--dsw-alias-border-l1);
+  background: var(--dsw-alias-bg-layer-1);
+  color: var(--dsw-alias-label-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  margin-bottom: 16px;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.back:hover {
+  background: var(--dsw-alias-bg-layer-2);
+  border-color: var(--dsw-alias-border-l2);
+}

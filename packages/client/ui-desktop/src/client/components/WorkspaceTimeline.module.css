@@ -1,0 +1,133 @@
+/* P2/Commit4 — Execution Timeline.
+   Colour is carried by one local custom property per row so a new kind only has
+   to declare `--wt-color`. Spacing/radius stay hardcoded: the design system
+   exposes no spacing or radius tokens. */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary);
+}
+
+.count {
+  font-size: 12px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.earlier {
+  font-size: 12px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.turn {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.turnHead {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.turnLabel {
+  font-size: 12px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.turnDuration {
+  font-size: 12px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  --wt-color: var(--dsw-alias-label-tertiary);
+}
+
+.row[data-kind='tool'] { --wt-color: var(--dsw-alias-brand-primary); }
+.row[data-kind='assistant'] { --wt-color: var(--dsw-alias-state-success-primary); }
+.row[data-kind='error'] { --wt-color: var(--dsw-alias-state-error-primary); }
+.row[data-kind='retry'],
+.row[data-kind='running-tool'],
+.row[data-kind='running-assistant'] { --wt-color: var(--dsw-alias-state-warn-primary); }
+
+.label {
+  width: 132px;
+  flex-shrink: 0;
+  font-size: 13px;
+  color: var(--dsw-alias-label-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.track {
+  position: relative;
+  flex: 1;
+  height: 14px;
+  border-radius: 3px;
+  background: var(--dsw-alias-bg-layer-2);
+}
+
+.bar {
+  position: absolute;
+  top: 2px;
+  height: 10px;
+  min-width: 2px;
+  border-radius: 3px;
+  background: var(--wt-color);
+}
+
+/* In-flight rows and rows whose real span is unknown get a start marker only —
+   never a width. */
+.marker {
+  position: absolute;
+  top: 0;
+  width: 2px;
+  height: 14px;
+  border-radius: 1px;
+  background: var(--wt-color);
+}
+
+.duration {
+  width: 56px;
+  flex-shrink: 0;
+  text-align: right;
+  font-size: 12px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.row[data-status='running'] .label { color: var(--dsw-alias-label-primary); }
+
+.row[data-status='running'] .marker {
+  animation: wt-pulse 1.2s ease-in-out infinite;
+}
+
+.row[data-status='error'] .duration { color: var(--dsw-alias-state-error-primary); }
+
+.more {
+  align-self: flex-start;
+  margin-top: 2px;
+}
+
+@keyframes wt-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}

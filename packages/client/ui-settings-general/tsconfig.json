@@ -41,5 +41,10 @@
     {
       "path": "../ui-sidebar"
     }
-  ]
+  ,
+    {
+      "path": "../../../vendor/schemastery"
+    }
+,
+  {"path": "../../api/remotes"}]
 }

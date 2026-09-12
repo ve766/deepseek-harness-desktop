@@ -1,0 +1,16 @@
+.root {
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.placeholder {
+  font-size: 14px;
+  color: var(--dsw-alias-label-tertiary);
+  padding: 24px 0;
+  text-align: center;
+}
+
+.error {
+  font-size: 13px;
+  color: var(--dsw-alias-state-error-primary);
+}

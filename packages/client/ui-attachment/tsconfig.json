@@ -17,5 +17,9 @@
     {
       "path": "../ui-primitives"
     }
-  ]
+  ,
+    {
+      "path": "../../../vendor/cordis"
+    }
+]
 }

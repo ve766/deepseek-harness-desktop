@@ -1,7 +1,7 @@
 {
   "name": "@deepseek-ai/dsh-root",
   "version": "0.1.0-rc.7",
-  "main": "electron/main.cjs",
+  "main": "electron/production.cjs",
   "license": "MIT",
   "private": true,
   "type": "module",
@@ -21,6 +21,8 @@
     "build": "npm run build:lib && npm run build:web",
     "desktop": "electron electron/main.cjs",
     "dist": "electron-builder",
+    "build:server": "npm run build:lib:host && tsx scripts/build-electron-server-deploy.ts",
+    "dist:portable": "npm run build:lib && npm run build:web && npm run build:server && npm run dist",
     "build:lib": "npm run build:lib:host && npm run build:lib:client",
     "build:lib:host": "tsc -b tsconfig.host.json && tsdown --env.DSH_BUILD_FACE host",
     "build:lib:client": "tsc -b tsconfig.client.json && tsdown --env.DSH_BUILD_FACE client",
@@ -188,6 +190,7 @@
   "build": {
     "appId": "com.deepseek.harness",
     "productName": "DeepSeek Harness",
+    "asar": false,
     "directories": {
       "output": "release"
     },
@@ -198,8 +201,7 @@
     ],
     "win": {
       "target": [
-        "dir",
-        "nsis"
+        "dir"
       ],
       "signAndEditExecutable": false
     }

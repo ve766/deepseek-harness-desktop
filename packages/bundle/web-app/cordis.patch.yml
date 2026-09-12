@@ -66,6 +66,23 @@
       config:
         maxNoteBytes: 8192
 
+    # ── personal knowledge agent ───────────────────────────────────────────
+    # Host-plane KnowledgeService: owns the SQLite store and exposes the
+    # `knowledge` Remote. The tools resolve it via `ctx.get`, so no preset realm.
+    - id: knowledge
+      name: '@deepseek-ai/dsh-knowledge-indexer'
+      config:
+        dbDir: !!js dshHomePath('knowledge')
+        markdownDir: !!js dshHomePath('knowledge', 'Processed')
+
+    # Model-facing knowledge tools (import/save/search/query). Mounted by the
+    # `knowledge-assistant` preset only, so it is disabled here to avoid a
+    # duplicate registration with that preset — the host-plane `knowledge`
+    # service above is what the tools resolve via `ctx.get`.
+    - id: knowledge-tools
+      name: '@deepseek-ai/dsh-knowledge-tools'
+      disabled: true
+
     # Browser Session export: `/export` command plus the shared download dialog.
     - id: session-log-download
       name: '@deepseek-ai/dsh-session-log-export'
@@ -237,6 +254,11 @@
     - id: ui-jobs
       name: '@deepseek-ai/dsh-client-ui-jobs'
 
+    # View switcher: sidebar footer entry that lists registered app.view slots
+    # and switches the center panel. Chat is always present as the fallback view.
+    - id: ui-app-views
+      name: '@deepseek-ai/dsh-client-ui-app-views'
+
     # Goal surface: GoalBar in the input dock over the goal session projection.
     - id: ui-goal
       name: '@deepseek-ai/dsh-client-ui-goal'
@@ -245,6 +267,23 @@
     # assistant-message action strip, over the messageFeedback Remote.
     - id: ui-message-feedback
       name: '@deepseek-ai/dsh-client-ui-message-feedback'
+
+    # AI Employee OS Desktop shell: the 'desktop' app.view (order 0, ahead of
+    # every other registrant) hosting the employee grid. Placeholder until the
+    # card surface lands; registers into the same ring as ui-knowledge.
+    - id: ui-desktop
+      name: '@deepseek-ai/dsh-client-ui-desktop'
+
+    # Personal Knowledge OS surface: the 'knowledge' app.view (Knowledge
+    # Center shell + Dashboard), backed by the knowledge Host Remote.
+    - id: ui-knowledge
+      name: '@deepseek-ai/dsh-client-ui-knowledge'
+
+    # Knowledge import surface: registers the 'import' knowledge.workspace
+    # entry owned by the ui-knowledge shell above. Loaded after it so the
+    # child slot is declared before this plugin's deferred registration.
+    - id: ui-import
+      name: '@deepseek-ai/dsh-client-ui-import'
 
     # Model selection: the /model popupSelect + composer seat over session.models.
     - id: ui-model-selection

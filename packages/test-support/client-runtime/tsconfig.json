@@ -26,5 +26,6 @@
     {
       "path": "../../host/apiproxy"
     }
-  ]
+  ,
+  {"path": "../../attachment/attachment"}]
 }

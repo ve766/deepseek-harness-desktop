@@ -28,6 +28,15 @@ declare module '@deepseek-ai/cordis' {
     /** The outward face only; the concrete service stays inside this plugin. */
     layout: import('./service.ts').ILayout
   }
+  interface Events {
+    /**
+     * The center column switched its active view (a successful
+     * ctx.layout.setView to a new id).
+     * @param view - the new active view id ('chat' = the conversation fallback).
+     * @mode emit
+     */
+    'layout/view-change'(view: string): void
+  }
 }
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
@@ -70,6 +79,17 @@ declare module '@deepseek-ai/dsh-client-ui-slots' {
      * `session` scope, and `ctx.layout` owns whether the column is open.
      */
     'details': { kind: 'single'; scope: 'session'; owner: DetailsOwnerProps }
+    /**
+     * The center column's top-level view ring: one list entry per app view
+     * (a knowledge center, an import flow, a dashboard — anything a future
+     * module contributes). The frame renders only the entry whose id matches
+     * the layout store's active view and falls back to the conversation slot
+     * when nothing matches — the chat default IS that fallback, so chat never
+     * registers here and the conversation surface stays exactly as shipped.
+     * Open registry: a new view is one register() call with a fresh id; no
+     * framework change, no hardcoded view list.
+     */
+    'app.view': { kind: 'list'; scope: 'root' }
     /**
      * Frame-wide floating layer, above every column and outside their scroll
      * containers. Deliberately generic and unowned by any feature: a badge, a
@@ -114,7 +134,7 @@ export const inject = ['slots', 'theme']
  * @param ctx - client root context.
  */
 export function apply(ctx: ClientContext): void {
-  const layout = new LayoutController()
+  const layout = new LayoutController(view => { ctx.emit('layout/view-change', view) })
   ctx.effect(() => {
     const disposeService = ctx.reflect.provide('layout', layout)
     const disposeRegistration = ctx.slots.register({
@@ -123,6 +143,7 @@ export function apply(ctx: ClientContext): void {
         'sidebar': { kind: 'single', scope: 'root' },
         'conversation': { kind: 'single', scope: 'session-maybe' },
         'details': { kind: 'single', scope: 'session' },
+        'app.view': { kind: 'list', scope: 'root' },
         'shell.overlay': { kind: 'list', scope: 'root' },
       },
       // Exclusive store: the factory itself — the framework instantiates per

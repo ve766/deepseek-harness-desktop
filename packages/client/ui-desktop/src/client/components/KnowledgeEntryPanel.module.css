@@ -1,0 +1,45 @@
+/* P2/Commit7 — Knowledge Entry Panel. Apple-restrained card: a single manual
+   action, no chrome. Uses only --dsw-alias-* design tokens. */
+
+.root {
+  padding: 12px 14px;
+  background: var(--dsw-alias-bg-layer-1, #ffffff);
+  border: 1px solid var(--dsw-alias-border-l2, #e6e6e6);
+  border-radius: 12px;
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.blockLabel {
+  font-size: 12px;
+  color: var(--dsw-alias-label-tertiary, #8a8a8e);
+}
+
+.previewTitle {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--dsw-alias-label-primary, #1d1d1f);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--dsw-alias-label-tertiary, #8a8a8e);
+}
+
+.errorLine {
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--dsw-alias-state-error-primary, #d70015);
+}

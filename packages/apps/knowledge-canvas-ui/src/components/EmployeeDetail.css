@@ -1,0 +1,465 @@
+/* ===========================================================================
+   AI Employee Detail · Stage 3 — drill-down profile (hero + capability +
+   level + growth timeline).
+
+   Consumes ONLY E0 `--aios-*` / `--bg-*` / `--label-*` tokens. The root is
+   TRANSPARENT (no glass shell) — single glass layer discipline is preserved
+   (only TitleBar + CommandCenter floating layer may be glass). No new tokens,
+   no backdrop-filter, no loop animations.
+   =========================================================================== */
+
+.employee-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 24px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.employee-detail__bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.employee-detail__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--aios-radius-full);
+  border: 1px solid var(--aios-glass-border);
+  background: var(--bg-layer-2);
+  color: var(--label-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    transform var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+
+.employee-detail__back:hover {
+  background: var(--bg-layer-3, var(--bg-layer-2));
+  transform: translateY(-1px);
+}
+
+.employee-detail__back:active {
+  transform: translateY(0);
+}
+
+.employee-detail__back-arrow {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.employee-detail__title {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--label-primary);
+  letter-spacing: -0.01em;
+}
+
+.employee-detail__hero {
+  border-radius: var(--aios-radius-lg);
+  border: 1px solid var(--aios-glass-border);
+  background: var(--bg-layer-1);
+  padding: 20px;
+  /* min-width:0 keeps the inner EmployeeIdentity from forcing a horizontal blowout */
+  min-width: 0;
+}
+
+.employee-detail__panel {
+  border-radius: var(--aios-radius-lg);
+  border: 1px solid var(--aios-glass-border);
+  background: var(--bg-layer-1);
+  padding: 16px 18px;
+  min-width: 0;
+}
+
+.employee-detail__section-title {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--label-secondary);
+}
+
+.employee-detail__caps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.employee-detail__cap {
+  font-size: 12.5px;
+  font-weight: 500;
+  padding: 5px 12px;
+  border-radius: var(--aios-radius-full);
+  background: var(--bg-layer-2);
+  color: var(--label-primary);
+  white-space: nowrap;
+}
+
+.employee-detail__level {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.employee-detail__level-track {
+  flex: 1;
+  height: 8px;
+  border-radius: var(--aios-radius-full);
+  background: var(--bg-layer-2);
+  overflow: hidden;
+}
+
+.employee-detail__level-fill {
+  display: block;
+  height: 100%;
+  border-radius: var(--aios-radius-full);
+  background: var(--emp-color, var(--label-primary));
+}
+
+.employee-detail__level-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--label-primary);
+  white-space: nowrap;
+}
+
+.employee-detail__timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.employee-detail__milestone {
+  position: relative;
+  display: flex;
+  gap: 14px;
+  padding-bottom: 16px;
+}
+
+.employee-detail__milestone:last-child {
+  padding-bottom: 0;
+}
+
+.employee-detail__milestone-dot {
+  flex: 0 0 auto;
+  width: 10px;
+  height: 10px;
+  margin-top: 4px;
+  border-radius: 50%;
+  background: var(--emp-color, var(--label-primary));
+  box-shadow: 0 0 0 3px var(--bg-layer-2);
+}
+
+/* connector line between milestones */
+.employee-detail__milestone:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 14px;
+  bottom: 0;
+  width: 2px;
+  background: var(--aios-glass-border);
+}
+
+.employee-detail__milestone-body {
+  min-width: 0;
+}
+
+.employee-detail__milestone-phase {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--label-primary);
+}
+
+.employee-detail__milestone-detail {
+  font-size: 12.5px;
+  color: var(--label-secondary);
+  margin-top: 2px;
+}
+
+/* Narrow screen — single column, tighten padding. */
+@media (max-width: 560px) {
+  .employee-detail {
+    padding: 16px;
+  }
+  .employee-detail__hero,
+  .employee-detail__panel {
+    padding: 14px;
+  }
+}
+
+/* Stage 10 (D2): read-only Knowledge section in the Employee Detail drill-down.
+   Shows owned contributions / related count / source+provenance ONLY.
+   No Memory, no Capability data, no private knowledge space. */
+.employee-knowledge-detail {
+  background: var(--bg-layer-1);
+  border: 1px solid var(--border-l1);
+  border-radius: var(--aios-radius-lg, 12px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.employee-knowledge-detail__related {
+  font-size: 13px;
+  color: var(--label-secondary);
+}
+.employee-knowledge-detail__owned-title {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--label-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.employee-knowledge-detail__empty {
+  font-size: 12.5px;
+  color: var(--label-tertiary);
+}
+.employee-knowledge-detail__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.employee-knowledge-detail__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--label-primary);
+  background: var(--bg-layer-2);
+  border: 1px solid var(--border-l1);
+  border-radius: var(--aios-radius-md, 8px);
+  padding: 8px 10px;
+  flex-wrap: wrap;
+}
+.employee-knowledge-detail__node-title {
+  font-weight: 600;
+}
+.employee-knowledge-detail__source {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  color: var(--label-secondary);
+}
+.employee-knowledge-detail__source-uri {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.employee-knowledge-detail__contributor {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11.5px;
+  color: var(--label-secondary);
+  margin-left: auto;
+}
+
+/* Stage 11 (D1-A / D1-B): Knowledge Contribution Surface + read-only Suggestions,
+   rendered inside the Employee Detail Knowledge section. Reuses Stage 10 tokens;
+   no new design tokens, no glass shell, no loop animations. */
+.employee-knowledge-contribute,
+.employee-knowledge-suggestions {
+  border-top: 1px solid var(--border-l1);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.employee-knowledge-contribute__title,
+.employee-knowledge-suggestions__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--label-secondary);
+}
+.employee-knowledge-contribute__hint,
+.employee-knowledge-suggestions__hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--label-tertiary);
+}
+.employee-knowledge-contribute__form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.employee-knowledge-contribute__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.employee-knowledge-contribute__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--label-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.employee-knowledge-contribute__select,
+.employee-knowledge-contribute__input {
+  font-size: 13px;
+  color: var(--label-primary);
+  background: var(--bg-layer-2);
+  border: 1px solid var(--border-l1);
+  border-radius: var(--aios-radius-md, 8px);
+  padding: 7px 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.employee-knowledge-contribute__submit {
+  align-self: flex-start;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--emp-color, var(--label-primary));
+  border: none;
+  border-radius: var(--aios-radius-full, 999px);
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: opacity var(--aios-motion-dur-fast, 120ms) var(--aios-motion-ease, ease);
+}
+.employee-knowledge-contribute__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.employee-knowledge-contribute__result {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.employee-knowledge-contribute__result-ok {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg-layer-2);
+  border: 1px solid var(--border-l1);
+  border-radius: var(--aios-radius-md, 8px);
+  padding: 12px;
+}
+.employee-knowledge-contribute__result-line strong {
+  font-size: 13px;
+  color: var(--label-primary);
+}
+.employee-knowledge-contribute__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+}
+.employee-knowledge-contribute__key {
+  color: var(--label-tertiary);
+  min-width: 64px;
+}
+.employee-knowledge-contribute__val {
+  color: var(--label-primary);
+}
+.employee-knowledge-contribute__mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px;
+  word-break: break-all;
+}
+.employee-knowledge-contribute__badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--aios-radius-full, 999px);
+  background: var(--bg-layer-3, var(--bg-layer-2));
+  color: var(--label-secondary);
+}
+.employee-knowledge-contribute__badge--draft {
+  color: var(--label-primary);
+}
+.employee-knowledge-contribute__badge--fail {
+  background: rgba(229, 72, 77, 0.14);
+  color: #e5484d;
+}
+.employee-knowledge-contribute__again {
+  align-self: flex-start;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--label-secondary);
+  background: transparent;
+  border: 1px solid var(--border-l1);
+  border-radius: var(--aios-radius-full, 999px);
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.employee-knowledge-suggestions__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.employee-knowledge-suggestions__item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--bg-layer-2);
+  border: 1px solid var(--border-l1);
+  border-radius: var(--aios-radius-md, 8px);
+  padding: 8px 10px;
+}
+.employee-knowledge-suggestions__node-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--label-primary);
+}
+.employee-knowledge-suggestions__reason {
+  font-size: 11.5px;
+  color: var(--label-secondary);
+}
+.employee-knowledge-suggestions__score {
+  font-size: 11px;
+  color: var(--label-tertiary);
+}
+.employee-knowledge-suggestions__loading,
+.employee-knowledge-suggestions__empty {
+  font-size: 12.5px;
+  color: var(--label-tertiary);
+}
+
+/* Stage 12 D4: aiStatus chip on each owned knowledge node. */
+.employee-knowledge-detail__status {
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 2px 8px;
+  border-radius: var(--aios-radius-full, 999px);
+  border: 1px solid var(--border-l1);
+  color: var(--label-secondary);
+  background: var(--bg-layer-2);
+}
+.employee-knowledge-detail__status--draft {
+  color: var(--state-warning-primary, #b8860b);
+  border-color: var(--state-warning-primary, #b8860b);
+}
+.employee-knowledge-detail__status--confirmed {
+  color: var(--state-success-primary, #2e8b57);
+  border-color: var(--state-success-primary, #2e8b57);
+}
+.employee-knowledge-detail__status--auto {
+  color: var(--label-tertiary);
+}

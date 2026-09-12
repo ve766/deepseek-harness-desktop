@@ -1,0 +1,315 @@
+/* =========================================================================
+   Morphicon demo harness styles.
+   Standalone Apple-flavoured layout so the P0 review is self-contained —
+   it does not depend on app.css being loaded (the morphicons ship their own
+   --morph-* fallbacks, this file only lays out the review page).
+   ========================================================================= */
+
+:root {
+  --md-bg: #f5f5f7;
+  --md-card: #ffffff;
+  --md-ink: #1d1d1f;
+  --md-ink-2: #6e6e73;
+  --md-line: rgba(0, 0, 0, 0.08);
+  --md-accent: #0a84ff;
+  --md-radius: 18px;
+  --md-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 28px rgba(0, 0, 0, 0.06);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: var(--md-bg);
+  color: var(--md-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  display: block;
+}
+
+.mdemo {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ---- Header ---- */
+.mdemo__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+
+.mdemo__title {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px;
+}
+
+.mdemo__sub {
+  font-size: 14px;
+  color: var(--md-ink-2);
+  margin: 0;
+}
+
+.mdemo__head-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+.mdemo__lang-label {
+  font-size: 12px;
+  color: var(--md-ink-2);
+}
+
+.mdemo__seg {
+  display: inline-flex;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 9px;
+  padding: 2px;
+}
+
+.mdemo__seg-btn {
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 7px;
+  color: var(--md-ink-2);
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.mdemo__seg-btn.is-on {
+  background: var(--md-card);
+  color: var(--md-ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* ---- Cards ---- */
+.mdemo__card {
+  background: var(--md-card);
+  border-radius: var(--md-radius);
+  box-shadow: var(--md-shadow);
+  padding: 22px 24px 26px;
+  margin-bottom: 20px;
+}
+
+.mdemo__h2 {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 0 0 18px;
+  color: var(--md-ink);
+}
+
+.mdemo__hint {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--md-ink-2);
+  margin: -8px 0 18px;
+}
+
+/* ---- State gallery ---- */
+.mdemo__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px 32px;
+}
+
+.mdemo__row--baseline {
+  align-items: flex-end;
+}
+
+.mdemo__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-width: 64px;
+}
+
+.mdemo__cell-label {
+  font-size: 12px;
+  color: var(--md-ink);
+}
+
+.mdemo__code {
+  font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  font-size: 11px;
+  color: var(--md-ink-2);
+  background: rgba(0, 0, 0, 0.04);
+  padding: 1px 6px;
+  border-radius: 5px;
+}
+
+/* ---- Provider rows (P1 target preview) ---- */
+.mdemo__providers {
+  margin-top: 22px;
+  border-top: 1px solid var(--md-line);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mdemo__prow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mdemo__pname {
+  font-size: 13px;
+  font-weight: 500;
+  width: 80px;
+}
+
+.mdemo__pstate {
+  font-size: 13px;
+  color: var(--md-ink-2);
+}
+
+/* ---- Live state machine ---- */
+.mdemo__live {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.mdemo__live-icon {
+  width: 96px;
+  height: 96px;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: var(--md-radius);
+  flex: none;
+}
+
+.mdemo__live-side {
+  flex: 1 1 260px;
+  min-width: 240px;
+}
+
+.mdemo__cur {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.mdemo__cur-k {
+  font-size: 13px;
+  color: var(--md-ink-2);
+}
+
+.mdemo__cur-v {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.mdemo__btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.mdemo__btn {
+  border: 1px solid var(--md-line);
+  background: rgba(0, 0, 0, 0.02);
+  font: inherit;
+  font-size: 13px;
+  padding: 7px 13px;
+  border-radius: 9px;
+  color: var(--md-ink);
+  cursor: pointer;
+  transition: background 160ms ease, border-color 160ms ease, transform 120ms ease;
+}
+
+.mdemo__btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.mdemo__btn:active {
+  transform: scale(0.96);
+}
+
+.mdemo__btn.is-on {
+  background: var(--md-accent);
+  border-color: var(--md-accent);
+  color: #fff;
+}
+
+.mdemo__btn--alt {
+  background: rgba(10, 132, 255, 0.08);
+  border-color: transparent;
+  color: var(--md-accent);
+}
+
+.mdemo__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.mdemo__status-k {
+  font-size: 13px;
+  color: var(--md-ink-2);
+}
+
+.mdemo__badge {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--md-ink-2);
+}
+
+.mdemo__badge.is-on {
+  background: rgba(52, 199, 89, 0.15);
+  color: #248a3d;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-bg: #000000;
+    --md-card: #1c1c1e;
+    --md-ink: #f5f5f7;
+    --md-ink-2: #98989d;
+    --md-line: rgba(255, 255, 255, 0.1);
+    --md-shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 28px rgba(0, 0, 0, 0.5);
+  }
+  .mdemo__seg-btn.is-on {
+    background: #2c2c2e;
+  }
+  .mdemo__live-icon,
+  .mdemo__code,
+  .mdemo__badge,
+  .mdemo__btn {
+    background: rgba(255, 255, 255, 0.06);
+  }
+  .mdemo__btn--alt {
+    background: rgba(10, 132, 255, 0.18);
+  }
+}

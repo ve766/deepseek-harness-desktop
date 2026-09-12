@@ -20,7 +20,7 @@ import css from './AppFrame.module.css'
 /** Full composed props: runtime share + child-slot render share + store share. */
 export type AppFrameProps =
   & PropsRuntime<'root'>
-  & PropsRenderSlots<'sidebar' | 'conversation' | 'details' | 'shell.overlay'>
+  & PropsRenderSlots<'sidebar' | 'conversation' | 'details' | 'app.view' | 'shell.overlay'>
   & PropsStore<ReturnType<typeof createLayoutStore>>
 
 /** Center column grid item (session-body building block). */
@@ -184,10 +184,19 @@ export function AppFrame({
       <>
         {/* Both column occupants stay at fixed tree positions from first
             paint — no loading gate: a bare status line reads worse than
-            the shell's own pending rendering. The conversation
-            is session-maybe; the strict details entry naturally renders
-            empty while no session is current. */}
-        <CenterColumn>{renderSlot('conversation', {})}</CenterColumn>
+            the shell's own pending rendering. The center is the view ring:
+            only the 'app.view' entry matching the layout store's active
+            view renders; every other id — including the 'chat' default,
+            which never registers — resolves through the list slot's
+            empty-filter fallback to the conversation slot, byte-for-byte
+            the pre-framework center. The details entry is strict and
+            naturally renders empty while no session is current. */}
+        <CenterColumn>
+          {renderSlot('app.view', {}, {
+            only: panels.view,
+            fallback: renderSlot('conversation', {}),
+          })}
+        </CenterColumn>
         <DetailsColumn>{renderSlot('details', {})}</DetailsColumn>
       </>
       <div className={css.overlayLayer} data-shell-overlay>

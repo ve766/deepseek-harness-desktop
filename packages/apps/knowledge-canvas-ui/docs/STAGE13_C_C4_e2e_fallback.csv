@@ -1,0 +1,9 @@
+scenario,question,retrieval_ok,reason,hits,ctx_nodes,llm_ms,answer_len,ok
+"A_lightrag","What does Nox do?",true,"ok",7,7,78,1289,true
+"A_lightrag","Which technologies are used for retrieval?",true,"ok",7,7,82,801,true
+"A_lightrag","Who employs Nox?",true,"ok",7,7,84,278,true
+"A_lightrag","How does LightRAG relate to Ollama?",true,"ok",7,7,78,590,true
+"A_lightrag","What does the knowledge graph contain?",true,"ok",7,7,1433,733,true
+"B_unavailable","-",false,"backend-unsupported",-1,-1,,-1,true
+"C_mock","-",false,"backend-unsupported",-1,-1,,-1,true
+"D_llm_seam","-",false,"available",-1,-1,,-1,true

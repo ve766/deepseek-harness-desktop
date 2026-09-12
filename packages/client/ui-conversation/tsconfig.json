@@ -83,7 +83,13 @@
     {
       "path": "../ui-settings"
     }
-  ],
+  ,
+    {
+      "path": "../../../vendor/schemastery"
+    }
+,
+  {"path": "../connection"},
+  {"path": "../../compaction/compaction"}],
   "exclude": [
     "**/*.legacy.*"
   ]

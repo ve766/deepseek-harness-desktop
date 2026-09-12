@@ -12,5 +12,9 @@
     { "path": "../../terminal/terminal" },
     { "path": "../../runtime-diagnostics/invariants" },
     { "path": "../../util/timeout" }
-  ]
+  ,
+    {
+      "path": "../../../vendor/schemastery"
+    }
+]
 }

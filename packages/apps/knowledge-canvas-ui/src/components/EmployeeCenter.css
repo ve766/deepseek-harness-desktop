@@ -1,0 +1,202 @@
+/* ===========================================================================
+   AI Employee Center · Stage 2-A — management space (roster + identity +
+   capability overview + status + switch entry).
+
+   Consumes ONLY E0 `--aios-*` / `--bg-*` / `--label-*` tokens. The root is
+   TRANSPARENT (no glass shell) — single glass layer discipline is preserved
+   (only TitleBar + CommandCenter floating layer may be glass). No new tokens,
+   no backdrop-filter, no loop animations.
+   =========================================================================== */
+
+.employee-center {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 24px;
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.employee-center--empty {
+  align-items: center;
+  justify-content: center;
+  min-height: 50vh;
+}
+
+.employee-center__header {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.employee-center__title {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--label-primary);
+  letter-spacing: -0.01em;
+}
+
+.employee-center__subtitle {
+  margin: 0;
+  font-size: 13.5px;
+  color: var(--label-secondary);
+}
+
+.employee-center__empty {
+  font-size: 14px;
+  color: var(--label-tertiary);
+}
+
+/* Responsive roster grid — auto-fills 240px columns, single column on narrow. */
+.employee-center__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+
+.employee-center__card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  border-radius: var(--aios-radius-lg);
+  border: 1px solid var(--aios-glass-border);
+  background: var(--bg-layer-1);
+  /* min-width:0 keeps the inner EmployeeCard from forcing a horizontal blowout */
+  min-width: 0;
+  transition:
+    border-color var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    box-shadow var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+
+/* Focused employee — accent ring in the agent's own color (no glass, no shadow
+   sprawl). Driven by ctx.activeId set by the Shell. */
+.employee-center__card.is-active {
+  border-color: var(--emp-color);
+  box-shadow: 0 0 0 1px var(--emp-color);
+}
+
+.employee-center__card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  /* allow badge + actions to wrap instead of forcing a horizontal blowout */
+  flex-wrap: wrap;
+}
+
+.employee-center__card-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  /* shrink + wrap so two buttons never overflow a 240px card */
+  min-width: 0;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.employee-center__badge {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: var(--aios-radius-full);
+  color: #fff;
+  background: var(--emp-color);
+  white-space: nowrap;
+}
+
+.employee-center__open {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--aios-radius-full);
+  border: 1px solid var(--aios-glass-border);
+  background: var(--bg-layer-2);
+  color: var(--label-primary);
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    transform var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+
+.employee-center__open:hover {
+  background: var(--bg-layer-3, var(--bg-layer-2));
+  transform: translateY(-1px);
+}
+
+.employee-center__open:active {
+  transform: translateY(0);
+}
+
+.employee-center__detail {
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: var(--aios-radius-full);
+  border: 1px solid var(--emp-color, var(--aios-glass-border));
+  background: transparent;
+  color: var(--emp-color, var(--label-primary));
+  cursor: pointer;
+  white-space: nowrap;
+  transition:
+    background var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    transform var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+
+.employee-center__detail:hover {
+  background: var(--bg-layer-3, var(--bg-layer-2));
+  transform: translateY(-1px);
+}
+
+.employee-center__detail:active {
+  transform: translateY(0);
+}
+
+/* Narrow screen — single column, tighten padding. */
+@media (max-width: 560px) {
+  .employee-center {
+    padding: 16px;
+  }
+  .employee-center__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Stage 10 (D1): read-only knowledge summary entry in the Employee Center card foot.
+   Pure display — no search / retrieval / graph UI. */
+.employee-knowledge-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 11.5px;
+  color: var(--label-secondary);
+}
+.employee-knowledge-summary__label {
+  font-weight: 600;
+  color: var(--label-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.employee-knowledge-summary__count {
+  font-weight: 600;
+  color: var(--label-primary);
+}
+.employee-knowledge-summary__perm {
+  padding: 1px 8px;
+  border-radius: var(--aios-radius-full);
+  border: 1px solid var(--border-l1);
+  background: var(--bg-layer-2);
+  color: var(--label-secondary);
+}
+.employee-knowledge-summary__perm--contribute {
+  color: var(--aios-brand, var(--label-primary));
+  border-color: var(--aios-brand, var(--border-l1));
+}
+.employee-knowledge-summary__perm--own {
+  color: var(--state-success, var(--label-primary));
+  border-color: var(--state-success, var(--border-l1));
+}

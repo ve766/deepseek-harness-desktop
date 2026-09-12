@@ -1,0 +1,214 @@
+/* ============================================================
+ * A3 · Navigation Rail — flat, non-glass system nav.
+ * Single-glass budget safe: uses only --bg-base (opaque) / --border-l1 /
+ * --label-* / --brand-primary / --aios-radius-* / --aios-motion-*.
+ * NO --aios-glass-* / NO backdrop-filter. (--bg-layer-* are translucent
+ * glass bases and must NOT be used here.)
+ * ============================================================ */
+
+.nav-rail {
+  --rail-w: 72px;
+  width: var(--rail-w);
+  flex: 0 0 var(--rail-w);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 10px 0;
+  box-sizing: border-box;
+  /* flat OPAQUE surface — NOT glass (--bg-base is fully opaque) */
+  background: var(--bg-base);
+  border-right: 1px solid var(--border-l1);
+}
+
+.nav-rail__brand {
+  display: flex;
+  justify-content: center;
+  padding: 4px 0 10px;
+}
+.nav-rail__brand-mark {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--aios-radius-md, 12px);
+  background: var(--brand-primary);
+  display: block;
+}
+
+.nav-rail__list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 0 8px;
+}
+
+.nav-rail__item {
+  position: relative;
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 100%;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--aios-radius-md, 12px);
+  color: var(--label-tertiary);
+  transition:
+    background var(--aios-motion-dur-fast, 140ms) var(--aios-motion-ease, ease),
+    color var(--aios-motion-dur-fast, 140ms) var(--aios-motion-ease, ease);
+}
+.nav-rail__item:hover:not(.nav-rail__item--disabled) {
+  background: var(--bg-layer-2);
+  color: var(--label-secondary);
+}
+.nav-rail__item--active {
+  color: var(--brand-primary);
+  background: var(--bg-layer-2);
+}
+.nav-rail__item--active::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--brand-primary);
+}
+.nav-rail__item--disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  color: var(--label-tertiary);
+}
+
+.nav-rail__icon {
+  font-size: 22px;
+  line-height: 1;
+}
+
+/* Marketplace "soon" badge (D7: aria-disabled + reduced opacity + badge) */
+.nav-rail__soon {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  font-size: 8px;
+  line-height: 1.2;
+  padding: 1px 4px;
+  border-radius: 999px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 48px;
+  background: var(--bg-layer-3, var(--bg-layer-2));
+  color: var(--label-tertiary);
+}
+
+.nav-rail__divider {
+  height: 1px;
+  margin: 8px 12px;
+  background: var(--border-l1);
+}
+
+/* Reserved CC invoke affordance — distinct from NavRoute items */
+.nav-rail__cc {
+  appearance: none;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  margin: 4px 8px 0;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--aios-radius-md, 12px);
+  color: var(--label-secondary);
+  transition:
+    background var(--aios-motion-dur-fast, 140ms) var(--aios-motion-ease, ease),
+    color var(--aios-motion-dur-fast, 140ms) var(--aios-motion-ease, ease);
+}
+.nav-rail__cc:hover {
+  background: var(--bg-layer-2);
+  color: var(--brand-primary);
+}
+
+/* ------------------------------------------------------------
+ * Showcase-only wrapper (A3 demo harness). Not part of the rail
+ * component itself; lives beside it so the rail renders in a
+ * relative container (D1: NOT position:fixed).
+ * ------------------------------------------------------------ */
+.rail-showcase {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 16px;
+  min-height: 420px;
+  border: 1px solid var(--border-l1);
+  border-radius: var(--aios-radius-md, 12px);
+  overflow: hidden;
+  background: var(--bg-layer-2);
+}
+.rail-showcase__stage {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.rail-showcase__stage-label {
+  font-size: 18px;
+  color: var(--label-primary, var(--label-secondary));
+  letter-spacing: 0.01em;
+}
+
+/* ---- responsive: <560px → bottom horizontal tab bar (D3) ---- */
+@media (max-width: 560px) {
+  .nav-rail {
+    flex-direction: row;
+    width: 100%;
+    flex: 1 1 auto;
+    height: auto;
+    padding: 6px 8px;
+    border-right: none;
+    border-top: 1px solid var(--border-l1);
+    gap: 2px;
+  }
+  .nav-rail__brand {
+    display: none;
+  }
+  .nav-rail__list {
+    flex-direction: row;
+    flex: 1 1 auto;
+    justify-content: space-around;
+    padding: 0;
+    gap: 2px;
+  }
+  .nav-rail__item {
+    width: auto;
+    flex: 1 1 auto;
+    height: 48px;
+  }
+  .nav-rail__item--active::before {
+    left: 50%;
+    top: auto;
+    bottom: 4px;
+    transform: translateX(-50%);
+    width: 18px;
+    height: 3px;
+    border-radius: 3px;
+  }
+  .nav-rail__divider {
+    width: 1px;
+    height: 28px;
+    margin: 0 6px;
+  }
+  .nav-rail__cc {
+    margin: 0;
+    width: 48px;
+    flex: 0 0 48px;
+  }
+  .rail-showcase {
+    flex-direction: column;
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true,
+    "rewriteRelativeImportExtensions": true
+  },
+  "include": [
+    "packages/knowledge/knowledge-storage/src",
+    "packages/knowledge/knowledge-parser/src",
+    "packages/knowledge/knowledge-indexer/src",
+    "packages/knowledge/knowledge-tools/src"
+  ]
+}

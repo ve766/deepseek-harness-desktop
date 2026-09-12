@@ -1,0 +1,262 @@
+/* ============================================================
+ * AI Employee Home (A) — the lounge.
+ * E0 `--aios-*` tokens only. No new tokens.
+ * Single glass layer = the Dock bar; the root is transparent
+ * (avoids the "card wall" / SaaS-dashboard feel).
+ * ============================================================ */
+
+.home {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 28px 16px 24px;
+  min-height: 540px;
+  /* intentionally transparent — presence, not a panel */
+  background: transparent;
+  color: var(--label-primary);
+  font-family: inherit;
+}
+
+.home__title {
+  align-self: flex-start;
+  font-size: var(--text-foot);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--label-tertiary);
+}
+
+/* ---------- Primary Character Stage (dominant focal) ---------- */
+.home__stage {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 8px 0 28px;
+}
+.home__primary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.home__primary-label {
+  font-size: var(--text-foot);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--label-secondary);
+}
+
+/* ---------- Employee Dock = AI Crew Switcher (single glass layer) ---------- */
+.home-dock {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 16px;
+  box-sizing: border-box;
+
+  /* the ONE glass layer */
+  background: var(--aios-glass-bg);
+  -webkit-backdrop-filter: saturate(var(--aios-glass-saturate)) blur(var(--aios-blur-md));
+  backdrop-filter: saturate(var(--aios-glass-saturate)) blur(var(--aios-blur-md));
+  border: 1px solid var(--aios-glass-border);
+  box-shadow: var(--aios-depth-2);
+  border-radius: var(--aios-radius-lg);
+}
+.home-dock__label {
+  flex: 0 0 auto;
+  font-size: var(--text-foot);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--label-secondary);
+}
+.home-dock__tiles {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex: 1 1 auto;
+  overflow-x: auto;
+}
+.home-dock__tile {
+  appearance: none;
+  flex: 0 0 auto;
+  border: 1px solid var(--border-l1);
+  background: var(--bg-layer-1);
+  border-radius: var(--aios-radius-lg);
+  padding: 8px;
+  cursor: pointer;
+  transition:
+    background var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    border-color var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    transform var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    box-shadow var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+.home-dock__tile:hover {
+  background: var(--bg-layer-2);
+  transform: translateY(-2px);
+}
+.home-dock__tile.is-active {
+  border-color: var(--brand-primary);
+  background: var(--bg-layer-2);
+  box-shadow: 0 0 0 2px var(--brand-primary);
+}
+.home-dock__tile.is-offline {
+  opacity: 0.45;
+  filter: grayscale(0.5);
+}
+.home-dock__avatar {
+  position: relative;
+  display: inline-flex;
+}
+.home-dock__badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  width: 10px;
+  height: 10px;
+  border-radius: var(--aios-radius-full);
+  background: var(--brand-primary);
+  border: 2px solid var(--bg-layer-1);
+  box-shadow: 0 0 0 1px var(--aios-glass-border);
+}
+
+/* ---------- Priority 2: one-sentence status narrative (flat, low-density) ----------
+ * AI Employee Status Narrative — NOT a PM task view.
+ * No card / no glass / no list: a single soft line keeps density low
+ * so the hero Presence stays the dominant focal point.
+ */
+.home__readout {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+}
+.home__readout-label {
+  font-size: var(--text-foot);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--label-tertiary);
+}
+.home__narrative {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  max-width: 460px;
+  text-align: center;
+  font-size: var(--text-sub);
+  color: var(--label-primary);
+  line-height: 1.5;
+}
+.home__narrative-dot {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-radius: var(--aios-radius-full);
+  background: var(--brand-primary);
+}
+.home__narrative-dot[data-status='offline'] { background: var(--label-tertiary); }
+.home__narrative-dot[data-status='idle'] { background: var(--label-secondary); }
+.home__narrative--empty {
+  color: var(--label-secondary);
+  font-style: italic;
+}
+
+/* ---------- Priority 3: quick actions (muted entry row, not a toolbar) ----------
+ * primary ≤1 (brand fill) · context ≤3 (ghost). Reuses B's CCAction grading.
+ */
+.home__actions-wrap {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+.home__actions-label {
+  font-size: var(--text-foot);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--label-tertiary);
+}
+.home__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+}
+.home-action {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--aios-radius-full);
+  font-size: var(--text-body);
+  font-family: inherit;
+  cursor: pointer;
+  transition:
+    background var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    border-color var(--aios-motion-dur-fast) var(--aios-motion-ease),
+    transform var(--aios-motion-dur-fast) var(--aios-motion-ease);
+}
+.home-action--context {
+  background: var(--bg-layer-1);
+  border: 1px solid var(--border-l1);
+  color: var(--label-primary);
+}
+.home-action--context:hover {
+  background: var(--bg-layer-2);
+}
+.home-action--primary {
+  background: var(--brand-primary);
+  border: 1px solid transparent;
+  color: #fff;
+}
+.home-action--primary:hover {
+  transform: translateY(-1px);
+}
+.home-action__icon {
+  font-size: 1em;
+  line-height: 1;
+}
+.home-action__shortcut {
+  font-size: var(--text-foot);
+  opacity: 0.7;
+}
+
+/* ---------- responsive: narrow → dock scrolls, stays single-row ---------- */
+@media (max-width: 760px) {
+  .home {
+    max-width: 100%;
+    padding: 20px 12px 18px;
+  }
+  .home-dock {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .home-dock__tiles {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+  }
+}
+
+/* ---------- reduced motion: kill transitions/animations ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .home,
+  .home * {
+    transition: none !important;
+    animation: none !important;
+  }
+  .home-dock__tile:hover {
+    transform: none;
+  }
+}

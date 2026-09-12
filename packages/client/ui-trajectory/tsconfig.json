@@ -35,5 +35,7 @@
     {
       "path": "../../runtime-diagnostics/invariants"
     }
-  ]
+  ,
+  {"path": "../ui-primitives"},
+  {"path": "../ui-slots"}]
 }

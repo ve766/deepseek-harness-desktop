@@ -29,5 +29,10 @@
     {
       "path": "../../runtime-diagnostics/invariants"
     }
-  ]
+  ,
+    {
+      "path": "../../../vendor/schemastery"
+    }
+,
+  {"path": "../../core/agent"}]
 }

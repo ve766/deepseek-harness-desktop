@@ -26,5 +26,9 @@
     {
       "path": "../ui-workspace"
     }
-  ]
+  ,
+    {
+      "path": "../../../vendor/cordis"
+    }
+]
 }

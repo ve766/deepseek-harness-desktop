@@ -8,4 +8,7 @@
     "emitDeclarationOnly": true
   },
   "include": ["src"]
-}
+,
+"references": [
+  {"path": "../../../../../../protocol"}
+]}

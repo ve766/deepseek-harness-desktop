@@ -30,5 +30,6 @@
     {
       "path": "../../util/timeout"
     }
-  ]
+  ,
+  {"path": "../../attachment/attachment"}]
 }

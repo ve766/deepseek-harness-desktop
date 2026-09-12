@@ -7,5 +7,12 @@
     {
       "path": "./tsconfig.client.json"
     }
-  ]
+  ,
+    {
+      "path": "../../../vendor/cordis"
+    },
+    {
+      "path": "../../../vendor/schemastery"
+    }
+]
 }

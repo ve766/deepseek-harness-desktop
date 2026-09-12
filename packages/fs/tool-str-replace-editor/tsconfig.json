@@ -12,5 +12,9 @@
     { "path": "../../sandbox/sandbox" },
     { "path": "../../sandbox/sandbox-policy" },
     { "path": "../../runtime-diagnostics/invariants" }
-  ]
+  ,
+    {
+      "path": "../../../vendor/schemastery"
+    }
+]
 }

@@ -1,0 +1,65 @@
+.wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 8px;
+  border-radius: 100px;
+  background: color-mix(in srgb, var(--ec-status) 14%, transparent);
+  color: var(--ec-status);
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  width: fit-content;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ec-status);
+  flex-shrink: 0;
+}
+
+/* Five-state motion set (§3.2): idle breathes, working/thinking pulse,
+   success holds a calm glow, error asks for help with a shake. */
+.wrap[data-status='idle'] .dot {
+  animation: ec-breathe 3s ease-in-out infinite;
+}
+.wrap[data-status='working'] .dot,
+.wrap[data-status='thinking'] .dot {
+  animation: ec-pulse 1.2s ease-in-out infinite;
+}
+.wrap[data-status='success'] .dot {
+  animation: ec-glow 2.4s ease-in-out infinite;
+}
+.wrap[data-status='error'] .dot {
+  animation: ec-shake 1.2s ease-in-out infinite;
+}
+
+.label {
+  white-space: nowrap;
+}
+
+@keyframes ec-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.7); }
+}
+@keyframes ec-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.15); opacity: 1; }
+}
+@keyframes ec-glow {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ec-status) 55%, transparent);
+  }
+  50% {
+    opacity: 0.82;
+    box-shadow: 0 0 7px 2px color-mix(in srgb, var(--ec-status) 40%, transparent);
+  }
+}
+@keyframes ec-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}

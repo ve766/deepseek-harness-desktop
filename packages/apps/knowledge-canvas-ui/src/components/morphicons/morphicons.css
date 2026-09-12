@@ -1,0 +1,166 @@
+/* =========================================================================
+   Morphicon — state glyphs that morph instead of swapping.
+   Motion is driven by the --dur-* / --ease-* tokens appended in app.css.
+   Path interpolation is done in JS (MorphIcon.tsx); everything here is
+   colour, looping motion and transition timing.
+
+   Colour is a per-state two-stop gradient (--morph-c1 → --morph-c2). The two
+   stops are registered with @property so they cross-fade smoothly when the
+   state changes ("状态间平滑过渡"). Scoped to Morphicons only.
+   ========================================================================= */
+
+/* Registered so the gradient stops can transition between states. */
+@property --morph-c1 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #8e8e93;
+}
+@property --morph-c2 {
+  syntax: '<color>';
+  inherits: true;
+  initial-value: #8e8e93;
+}
+
+.morph {
+  display: inline-block;
+  flex: none;
+  vertical-align: middle;
+  color: var(--morph-color, var(--morph-idle, #8e8e93));
+  /* Defaults; per-state blocks override both stops. */
+  --morph-c1: var(--morph-color, #8e8e93);
+  --morph-c2: var(--morph-color, #8e8e93);
+  transition: color var(--dur-normal, 240ms) var(--ease-apple, cubic-bezier(0.4, 0, 0.2, 1)),
+    --morph-c1 var(--dur-normal, 240ms) var(--ease-apple, cubic-bezier(0.4, 0, 0.2, 1)),
+    --morph-c2 var(--dur-normal, 240ms) var(--ease-apple, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+.morph path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform-box: view-box;
+  transform-origin: 12px 12px;
+}
+
+/* ---- Ring: dashed pattern eases, radius is lerped in JS ---- */
+.morph__ring {
+  stroke-width: 2;
+  transition: stroke-dasharray var(--dur-morph, 520ms)
+    var(--ease-out, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+/* ---- Marks: fade and thicken between states ---- */
+.morph__mark {
+  transition: opacity var(--dur-fast, 160ms) linear,
+    stroke-width var(--dur-normal, 240ms) var(--ease-out, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+/* ---- Per-state colour + spin tempo ---- */
+.morph[data-state='idle'] {
+  --morph-color: var(--morph-idle, #8e8e93);
+  --morph-c1: #8e8e93;
+  --morph-c2: #aeaeb2;
+}
+.morph[data-state='thinking'] {
+  --morph-color: var(--morph-thinking, #0a84ff);
+  --morph-c1: #0a84ff;
+  --morph-c2: #64d2ff;
+  --morph-spin: 1.2s;
+}
+.morph[data-state='searching'] {
+  --morph-color: var(--morph-searching, #30b0c7);
+  --morph-c1: #30b0c7;
+  --morph-c2: #5ac8fa;
+  --morph-spin: 1.6s;
+}
+.morph[data-state='learning'] {
+  --morph-color: var(--morph-learning, #5e5ce6);
+  --morph-c1: #5e5ce6;
+  --morph-c2: #bf5af2;
+  --morph-spin: 1.4s;
+}
+.morph[data-state='completed'] {
+  --morph-color: var(--morph-completed, #34c759);
+  --morph-c1: #34c759;
+  --morph-c2: #30d158;
+}
+.morph[data-state='warning'] {
+  --morph-color: var(--morph-warning, #ff9f0a);
+  --morph-c1: #ff9f0a;
+  --morph-c2: #ffd60a;
+}
+.morph[data-state='error'] {
+  --morph-color: var(--morph-error, #ff453a);
+  --morph-c1: #ff453a;
+  --morph-c2: #ff7a7a;
+}
+
+/* ---- Looping motion ---- */
+@keyframes morph-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes morph-breathe {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes morph-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.morph[data-spin='cw'] .morph__ring {
+  animation: morph-spin var(--morph-spin, 1.2s) linear infinite;
+}
+.morph[data-spin='ccw'] .morph__ring {
+  animation: morph-spin var(--morph-spin, 1.4s) linear infinite reverse;
+}
+
+/* Idle never spins — it breathes instead. */
+.morph[data-state='idle'] .morph__ring {
+  animation: morph-breathe 2.4s ease-in-out infinite;
+}
+
+/* One-shot spring the moment a task lands. Selector only matches while the
+   attribute is "completed", so re-entering the state replays it. */
+.morph[data-state='completed'] .morph__mark--a {
+  animation: morph-pop 420ms var(--ease-spring, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
+}
+
+/* =========================================================================
+   Reduced motion — state is still fully legible, just static.
+   Shape + colour carry the meaning; nothing loops, nothing springs, the
+   gradient stays at its current stops (no cross-fade).
+   ========================================================================= */
+@media (prefers-reduced-motion: reduce) {
+  .morph,
+  .morph__ring,
+  .morph__mark {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  /* Spinning arcs are ambiguous when frozen, so give the active states a
+     complete ring silhouette instead of a partial one. */
+  .morph[data-state='thinking'] .morph__ring,
+  .morph[data-state='searching'] .morph__ring,
+  .morph[data-state='learning'] .morph__ring {
+    stroke-dasharray: 60 0;
+  }
+}

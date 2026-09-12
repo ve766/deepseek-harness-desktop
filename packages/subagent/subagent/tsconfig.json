@@ -53,5 +53,7 @@
     {
       "path": "../../runtime-diagnostics/invariants"
     }
-  ]
+  ,
+  {"path": "../../core/session"},
+  {"path": "../../util/brand"}]
 }

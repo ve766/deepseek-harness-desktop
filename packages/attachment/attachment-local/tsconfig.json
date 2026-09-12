@@ -8,5 +8,9 @@
     { "path": "../attachment" },
     { "path": "../../util/home-paths" },
     { "path": "../../runtime-diagnostics/invariants" }
-  ]
+  ,
+    {
+      "path": "../../../vendor/schemastery"
+    }
+]
 }

@@ -1,0 +1,105 @@
+.card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: var(--dsw-alias-bg-layer-1);
+  border: 1px solid var(--dsw-alias-border-l1);
+  border-radius: 24px;
+  padding: 22px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.10);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.16);
+  border-color: var(--dsw-alias-border-l2);
+}
+
+/* Role-representative 6% top accent (Mascot Visual System v1.0 family colors). */
+.accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 96px;
+  pointer-events: none;
+}
+.card[data-mascot='assistant'] .accent {
+  background: linear-gradient(135deg, rgba(245, 166, 35, 0.10), rgba(255, 207, 107, 0.06));
+}
+.card[data-mascot='nox'] .accent {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.06), rgba(74, 144, 217, 0.08));
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  position: relative;
+}
+
+.nameBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--dsw-alias-label-primary);
+}
+.role {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dsw-alias-label-secondary);
+}
+
+.task {
+  margin-top: 16px;
+  background: var(--dsw-alias-bg-layer-2);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+.taskLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--dsw-alias-label-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.taskText {
+  margin-top: 3px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--dsw-alias-label-primary);
+}
+
+.tags {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.tag {
+  display: inline-block;
+  background: var(--dsw-alias-bg-mask-1);
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 100px;
+}
+
+.actions {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.action {
+  width: 100%;
+}
